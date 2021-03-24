@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar</title>
+    {% load static %}
+    <script src="{% static 'node_modules/vue/dist/vue.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'node_modules/bootstrap/dist/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'node_modules/@fortawesome/fontawesome-free/css/all.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'styles/auth/Signup.css' %}">
+</head>
+<body>
+    <div id="app" class="auth-container">
+        <div class="auth-canvas">
+            <div class="auth-canvas-title">
+                <span class="auth-title-text"><b>Registrar</b></span>
+            </div>
+
+            <div class="auth-signup-form">
+                <div class="auth-form-input">
+                    <span class="auth-span-label">Nome </span>
+                    <input v-model="form.name" class="auth-input"/>
+                </div>
+                <div class="auth-form-input">
+                    <span class="auth-span-label">CPF </span>
+                    <input v-model="form.cpf" class="auth-input"/>
+                </div>
+                <div class="auth-form-input">
+                    <span class="auth-span-label">Nascimento </span>
+                    <input v-model="form.birthday" class="auth-input" placeholder="DD/MM/AAA"/>
+                </div>
+                <div class="auth-form-input">
+                    <span class="auth-span-label">E-mail </span>
+                    <input v-model="form.email" class="auth-input"/>
+                </div>
+                <div class="auth-form-input">
+                    <span class="auth-span-label">Usuário </span>
+                    <input v-model="form.username" class="auth-input"/>
+                </div>
+                <div class="auth-form-input">
+                    <span class="auth-span-label">Senha </span>
+                    <input v-model="form.password" class="auth-input" type="password"/>
+                </div>
+                <span style="width: 100%">
+                    <button class="btn auth-signup-button" @click="userRegister()">Prosseguir</button>
+                </span>
+            </div>
+
+        </div>
+    </div>
+</body>
+{% load static %}
+<script src="{% static 'node_modules/jquery/dist/jquery.js' %}"></script>
+<script src="{% static 'components/auth/Signup.js' %}"></script>
+</html>

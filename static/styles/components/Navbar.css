@@ -1,0 +1,35 @@
+.shaddai-navbar {
+    width: 100%;
+    height: 40px;
+    padding: 0 5px;
+
+    background-color: var(--main-yellow);
+    align-items: center;
+}
+
+.shaddai-logo img {
+    width: 60px;
+    margin-top: 3px;
+    transition: width 0.5s, height 0.5s, margin 0.5s;
+}
+
+a.shaddai-logo:hover {
+    text-decoration: none;
+}
+
+.shaddai-logo:hover img {
+    width: 71px;
+    margin: 0 3px;
+}
+
+a.profile-button {
+    cursor: pointer;
+    float: right;
+}
+
+.profile-image {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-top: 5px;
+}

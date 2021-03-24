@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    {% load static %}
+    <script src="{% static 'node_modules/vue/dist/vue.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'node_modules/bootstrap/dist/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'node_modules/@fortawesome/fontawesome-free/css/all.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'styles/auth/Signup.css' %}">
+</head>
+<body>
+    <div id="app" class="auth-container">
+        <div class="auth-canvas" style="height: 45%">
+            <div class="auth-canvas-title">
+                <span class="auth-title-text"><b>Login</b></span>
+            </div>
+
+            <div class="auth-signup-form">
+                <div class="auth-form-input">
+                    <span class="auth-span-label">Usuário </span>
+                    <input v-model="form.username" class="auth-input"/>
+                </div>
+                <div class="auth-form-input">
+                    <span class="auth-span-label">Senha </span>
+                    <input v-model="form.password" class="auth-input" type="password"/>
+                </div>
+                <span style="width: 100%">
+                    <button class="btn auth-signup-button" @click="userLogin()">Prosseguir</button>
+                </span>
+                <span style="width: 100%;">
+                    <a style="float: right" class="auth-other-buttons">Esqueceu sua senha? Clique aqui</a> <br>
+                    <a style="float: right" class="auth-other-buttons">Não tem uma conta? Clique aqui</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</body>
+{% load static %}
+<script src="{% static 'node_modules/jquery/dist/jquery.js' %}"></script>
+<script src="{% static 'components/auth/Login.js' %}"></script>
+</html>

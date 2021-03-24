@@ -1,0 +1,129 @@
+.shaddai-title {
+    color: var(--title);
+    font-size: 35px;
+    font-weight: bold;
+    margin-bottom: 22px;
+}
+
+.shaddai-title-2 {
+    color: var(--title);
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.ticket-container {
+    background-color: var(--white);
+    border-radius: 15px;
+    box-shadow: 5px 5px 6px #dbdbdb;
+    padding: 20px;
+}
+
+.ticket-hr {
+    border-color: #B7B7B7;
+    margin: 10px 10px;
+}
+
+.ticket-list-item {
+    cursor: pointer;
+}
+
+.item-container {
+    display: flex;
+}
+
+.item-left-part {
+    width: 80%;
+}
+
+.item-right-part {
+    width: 20%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.ticket-list-item .item-title {
+    color: var(--title);
+    font-size: 25px;
+    font-weight: 600;
+    font-style: italic;
+}
+
+.ticket-list-item .item-price {
+    color: var(--title);
+    font-size: 25px;
+    align-self: center;
+}
+
+.ticket-list-item .item-subtitle {
+    color: var(--title);
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.auth-signup-form {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.auth-form-input {
+    width: 100%;
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.auth-span-label {
+    color: gray;
+}
+
+.auth-input-label {
+    font-size: 15px;
+    color: gray;
+    line-height: 1.2;
+    text-align: right;
+    position: absolute;
+    top: 14px;
+    left: -105px;
+    width: 80px;
+}
+
+.auth-input {
+    margin-bottom: -15px;
+    height: 40px;
+    width: 100%;
+    border: none;
+    border-bottom: solid 2px #3e3e3e;
+    transition: border-bottom-color 0.5s;
+}
+
+.auth-input:focus {
+    outline: none;
+    border-bottom: solid 2px #EAD237;
+}
+
+.auth-signup-button {
+    background-color: #EAD237;
+    color: #3e3e3e;
+    border-radius: 20px;
+    min-width: 150px;
+    margin-bottom: 5px;
+    transition: background-color 1s;
+    float: right;
+}
+
+.auth-signup-button:hover {
+    background-color: #EFDD69;
+    color: white;
+}
+
+.auth-other-buttons {
+    cursor: pointer;
+    color: #6E9ADD;
+}
+
+.custom-input-class {
+    border: none;
+    height: 40px;
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}El Shaddai Transportes{% endblock %}</title>
+    {% load static %}
+    <script src="{% static 'node_modules/vue/dist/vue.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'node_modules/bootstrap/dist/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'node_modules/@fortawesome/fontawesome-free/css/all.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/Shaddai.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/components/Navbar.css' %}">
+    {% block primary_dependencies %}
+
+    {% endblock %}
+</head>
+<body>
+    <div class="shaddai-navbar">
+        <a href="/" class="shaddai-logo">
+            <img src="{% static 'images/logo3.png' %}"
+                 alt="el shaddai logo">
+        </a>
+        <a class="profile-button">
+            <img class="profile-image"
+                 src="https://github.com/adenild.png"
+                 alt="profile">
+        </a>
+    </div>
+    {% block content %}
+
+    {% endblock %}
+    <script src="{% static 'node_modules/jquery/dist/jquery.js' %}"></script>
+    <script src="{% static 'node_modules/@popperjs/core/dist/umd/popper.js' %}"></script>
+    <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
+    <script src="{% static 'node_modules/@fortawesome/fontawesome-free/js/all.js' %}"></script>
+    {% block secondary_dependencies %}
+
+    {% endblock %}
+</body>
+</html>

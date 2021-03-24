@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% block title %}Passagens{% endblock %}
+{% load static %}
+{% block primary_dependencies %}
+    <link rel="stylesheet" href="{% static 'styles/components/Tickets.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="tickets" class="shaddai-container">
+    <div class="ticket-container" style="max-height: 720px; width: 684px;">
+        <div class="shaddai-title">Viagens por horário</div>
+        <div v-for="(travel, index) in travels" class="ticket-list-item">
+            <hr class="ticket-hr">
+            <a class="item-container" @click="fillTravel(index)">
+                <div class="item-left-part">
+                    <span class="item-title">
+                        {% verbatim %}
+                        {{ travel.route.origin }} - {{ travel.route.destiny }}
+                        {% endverbatim %}
+                    </span><br>
+                    <span class="item-subtitle">
+                        {% verbatim %}
+                        {{ travel.departure | timeFormat }} - {{ travel.arrival | timeFormat }}
+                        {% endverbatim %}
+                    </span>
+                </div>
+                <div class="item-right-part">
+                    <span class="item-price">
+                        {% verbatim %}
+                        {{ travel.base_price | priceFormat }}
+                        {% endverbatim %}
+                    </span>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="ticket-container" style="max-height: 720px; width: 684px; margin-left: 50px; margin-right: 50px;">
+        <div class="shaddai-title">Viagens por rota</div>
+        <div v-for="(travel, index) in travels" class="ticket-list-item">
+            <hr class="ticket-hr">
+            <a class="item-container">
+                <div class="item-left-part">
+                    <span class="item-title">
+                        {% verbatim %}
+                        {{ travel.route.origin }}
+                        {% endverbatim %}
+                    </span><br>
+                    <span class="item-subtitle">
+                        {% verbatim %}
+                        {{ travel.route.stops }} paradas
+                        {% endverbatim %}
+                    </span>
+                </div>
+                <div class="item-right-part">
+                    <span class="item-price">
+                        {% verbatim %}
+                        {{ travel.route.distance }}km
+                        {% endverbatim %}
+                    </span>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div style="display: flex; flex-direction: column;">
+        <div class="ticket-container" style="width: 351px; height: 274px; margin-bottom: 30px">
+        <div class="shaddai-title-2">Tabela de descontos</div>
+        <div v-for="(discount, index) in discounts" class="ticket-list-item">
+            <hr class="ticket-hr" style="margin: 5px 10px;">
+            <a class="item-container" @click="applyDiscount(index)">
+                <div class="item-left-part">
+                    <span class="item-title" style="font-size: 20px;">
+                        {% verbatim %}
+                        {{ discount.type }}
+                        {% endverbatim %}
+                    </span>
+                </div>
+                <div class="item-right-part">
+                    <span class="item-price">
+                        {% verbatim %}
+                        {{ discount.value }}%
+                        {% endverbatim %}
+                    </span>
+                </div>
+            </a>
+        </div>
+    </div>
+        <div class="ticket-container" style="width: 351px;">
+            <div class="shaddai-title-2" style="margin-bottom: 15px;">Finalizar compra</div>
+            <div class="auth-signup-form">
+                <div class="auth-form-input">
+                    <span class="auth-span-label">Nome </span>
+                    <input v-model="form.passenger_name" class="auth-input"/>
+                </div>
+                <div class="auth-form-input">
+                    <span class="auth-span-label">Origem x Destino </span>
+                    <input v-model="form.travel.text" class="auth-input"/>
+                </div>
+                <div class="auth-form-input">
+                    <span class="auth-span-label">Nascimento </span>
+                    <input v-model="form.passenger_birthday" class="auth-input"/>
+                </div>
+                <div class="auth-form-input">
+                    <span class="auth-span-label">CPF </span>
+                    <input v-model="form.passenger_cpf" class="auth-input"/>
+                </div>
+                <div class="auth-form-input">
+                    <span class="auth-span-label">Conta de cliente </span>
+                    <input v-model="form.passenger_id" class="auth-input"/>
+                </div>
+                <div class="auth-form-input">
+                    <span class="auth-span-label">Forma de pagamento </span>
+                    <input v-model="form.payment_method" class="auth-input"/>
+                </div>
+                <div class="auth-form-input" style="width: 100%; margin-bottom: -10px; display: flex">
+                    <div style="width: 50%">
+                        <span class="auth-span-label">Valor total </span>
+                        <div class="custom-input-class">
+                            <span class="shaddai-title">
+                                {% verbatim %}
+                                {{ form.total_price }}
+                                {% endverbatim %}
+                            </span>
+                        </div>
+                    </div>
+                    <div style="width: 50%; justify-content: flex-end; align-items: center; margin-top: 5px">
+                        <button class="btn auth-signup-button" @click="registerTicket()">Prosseguir</button>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% load static %}
+{% block secondary_dependencies %}
+    <script src="{% static 'components/terminal/Tickets.js' %}"></script>
+{% endblock %}

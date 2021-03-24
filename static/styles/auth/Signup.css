@@ -1,0 +1,137 @@
+body, html {
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    margin: 0;
+    background-color: #F2F3F5;
+}
+
+.auth-container {
+    height: 100%;
+    padding: 0 25%;
+    margin: 0;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-canvas {
+    background-color: #ffffff;
+
+    margin: 10px;
+    padding: 0 20%;
+
+    min-width: 473px;
+    height: 650px;
+
+    border-radius: 15px;
+}
+
+.auth-canvas-title {
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 30px 0 40px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.biblio-canvas-title::before {
+    content: "";
+    display: block;
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.48)
+}
+
+.auth-title-text {
+    font-size: 25px;
+    color: #3e3e3e;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.auth-signup-form {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.auth-form-input {
+    width: 100%;
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.auth-span-label {
+    font-size: 15px;
+    color: gray;
+    line-height: 1.2;
+    text-align: right;
+    position: absolute;
+    top: 14px;
+    left: -105px;
+    width: 80px;
+}
+
+.auth-input-label {
+    font-size: 15px;
+    color: gray;
+    line-height: 1.2;
+    text-align: right;
+    position: absolute;
+    top: 14px;
+    left: -105px;
+    width: 80px;
+}
+
+.auth-input {
+    height: 45px;
+    width: 100%;
+    border: none;
+    border-bottom: solid 2px #3e3e3e;
+    transition: border-bottom-color 0.5s;
+}
+
+.auth-input:focus {
+    outline: none;
+    border-bottom: solid 2px #EAD237;
+}
+
+.auth-signup-button {
+    background-color: #EAD237;
+    color: #3e3e3e;
+    border-radius: 20px;
+    min-width: 150px;
+    margin-bottom: 5px;
+    transition: background-color 1s;
+    float: right;
+}
+
+.auth-signup-button:hover {
+    background-color: #EFDD69;
+    color: white;
+}
+
+.auth-other-buttons {
+    cursor: pointer;
+    color: #6E9ADD;
+}
