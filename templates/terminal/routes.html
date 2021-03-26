@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% block title %}Rotas{% endblock %}
+{% load static %}
+{% block primary_dependencies %}
+<link rel="stylesheet" href="{% static 'styles/main.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="routes" class="shaddai-container">
+    <div v-if="booleans.update != true" style="margin: auto;">
+        <div class="shaddai-canvas" style="width: 1200px;">
+            <div class="shaddai-title">Rotas <a><i class="far fa-plus-square" style="cursor: pointer" data-toggle="modal" data-target="#addModal"></i></a></div>
+            <div class="shaddai-canvas-content">
+                <div class="shaddai-list">
+                    <div v-for="(route, id) in routes" class="shaddai-list-item">
+                        {% verbatim %}
+                        <hr class="shaddai-hr">
+                        <a class="item-container" @click="selectRow(id)">
+                            <div class="item-left-part">
+                                <span class="item-title">{{ route.name }}</span>
+                                <span class="item-subtitle">{{ route.origin }} - {{ route.destiny }}</span>
+                            </div>
+                            <div class="item-right-part">
+                                <span class="item-icon">
+                                    <i class="fas fa-info-circle"></i>
+                                </span>
+                            </div>
+                        </a>
+                        {% endverbatim %}
+                    </div>
+                </div>
+                <div class="selected-item-container" v-if="selected">
+                    {% verbatim %}
+                    <div class="shaddai-title">{{ selected.name }} <a @click="booleans.update = true"><i style="cursor: pointer" class="far fa-edit"></i></a></div>
+                    <div class="form-container">
+                        <div class="item-container code">
+                            <span class="item-title">Código</span>
+                            <span class="item-text">{{ selected.code }}</span>
+                        </div>
+                        <div class="item-container distance">
+                            <span class="item-title">Distância</span>
+                            <span class="item-text">{{ selected.distance }}</span>
+                        </div>
+                        <div class="item-container origin">
+                            <span class="item-title">Origem</span>
+                            <span class="item-text">{{ selected.origin }}</span>
+                        </div>
+                        <div class="item-container destiny">
+                            <span class="item-title">Destino</span>
+                            <span class="item-text">{{ selected.destiny }}</span>
+                        </div>
+                        <div class="item-container distance vehicles">
+                            <span class="item-title">Veículos alocados</span>
+                            <span class="item-text">{{ selected.allocated_vehicles }}</span>
+                        </div>
+                        <div class="item-container stops">
+                            <span class="item-title">Paradas</span>
+                            <span class="item-text">{{ selected.stops }}</span>
+                        </div>
+                    </div>
+
+                    {% endverbatim %}
+                </div>
+            </div>
+        </div>
+        <div class="under-section">
+            <a class="back-button" href="/terminal">Voltar</a>
+        </div>
+    </div>
+    <div v-else style="margin: auto;">
+        <div class="shaddai-canvas" style="width: 829px;">
+            <div class="shaddai-title">Atualizar rota <a @click="fillForm()"><i style="cursor: pointer" class="far fa-edit" data-toggle="modal" data-target="#editModal"></i></a></div>
+            <div class="selected-item-container" v-if="selected" style="border-left: none; padding: 0;">
+                {% verbatim %}
+                <div class="update-form-container">
+                    <div class="item-container name">
+                        <span class="item-title">Nome</span>
+                        <span class="item-text">{{ selected.name }}</span>
+                    </div>
+                    <div class="item-container code">
+                        <span class="item-title">Código</span>
+                        <span class="item-text">{{ selected.code }}</span>
+                    </div>
+                    <div class="item-container distance">
+                        <span class="item-title">Distância</span>
+                        <span class="item-text">{{ selected.distance }}</span>
+                    </div>
+                    <div class="item-container origin">
+                        <span class="item-title">Origem</span>
+                        <span class="item-text">{{ selected.origin }}</span>
+                    </div>
+                    <div class="item-container destiny">
+                        <span class="item-title">Destino</span>
+                        <span class="item-text">{{ selected.destiny }}</span>
+                    </div>
+                    <div class="item-container distance vehicles">
+                        <span class="item-title">Veículos alocados</span>
+                        <span class="item-text">{{ selected.allocated_vehicles }}</span>
+                    </div>
+                    <div class="item-container stops">
+                        <span class="item-title">Paradas</span>
+                        <span class="item-text">{{ selected.stops }}</span>
+                    </div>
+                </div>
+                {% endverbatim %}
+            </div>
+        </div>
+        <div class="under-section">
+            <a class="delete-button" data-toggle="modal" data-target="#deleteModal">Apagar</a>
+            <a class="back-button" @click="booleans.update = false">Voltar</a>
+        </div>
+    </div>
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="shaddai-title">Deletar rota</div>
+                    <p>
+                        Tem certeza que quer excluir esta rota?
+                        <br> <br>
+                        Todas as interações com relação à ela serão excluídas
+                    </p>
+                    <button class="btn shaddai-proceed-button" @click="deleteRoute()" data-dismiss="modal">Prosseguir</button>
+                    <button class="btn shaddai-cancel-button" style="margin-right: 5px" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="shaddai-title" style="margin-bottom: 15px;">Editar rota</div>
+                    <div class="shaddai-form">
+                        <div class="input-group">
+                            <span class="label">Nome </span>
+                            <input v-model="form.name" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Código </span>
+                            <input v-model="form.code" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Distância </span>
+                            <input v-model="form.distance" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Origem </span>
+                            <input v-model="form.origin" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Destino </span>
+                            <input v-model="form.destiny" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Veículos alocados </span>
+                            <input v-model="form.allocated_vehicles" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Paradas </span>
+                            <input v-model="form.stops" class="shaddai-input one-line"/>
+                        </div>
+                    </div>
+                    <button class="btn shaddai-proceed-button" @click="updateRoute()" data-dismiss="modal">Prosseguir</button>
+                    <button class="btn shaddai-cancel-button" style="margin-right: 5px" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="shaddai-title" style="margin-bottom: 15px;">Adicionar rota</div>
+                    <div class="shaddai-form">
+                        <div class="input-group">
+                            <span class="label">Nome </span>
+                            <input v-model="form.name" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Código </span>
+                            <input v-model="form.code" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Distância </span>
+                            <input v-model="form.distance" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Origem </span>
+                            <input v-model="form.origin" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Destino </span>
+                            <input v-model="form.destiny" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Veículos alocados </span>
+                            <input v-model="form.allocated_vehicles" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Paradas </span>
+                            <input v-model="form.stops" class="shaddai-input one-line"/>
+                        </div>
+                    </div>
+                    <button class="btn shaddai-proceed-button" @click="addRoute()" data-dismiss="modal">Prosseguir</button>
+                    <button class="btn shaddai-cancel-button" style="margin-right: 5px" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% load static %}
+{% block secondary_dependencies %}
+<script src="{% static 'components/routes/main.js' %}"></script>
+{% endblock %}

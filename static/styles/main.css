@@ -1,0 +1,187 @@
+.shaddai-canvas .shaddai-canvas-content {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-content: center;
+}
+
+.shaddai-list {
+    margin-left: 5px;
+}
+
+.shaddai-list-item {
+    cursor: pointer;
+}
+
+.shaddai-hr {
+    border-color: #B7B7B7;
+    margin: 10px 10px;
+}
+
+.shaddai-list-item .item-container {
+    display: flex;
+}
+
+.shaddai-list-item .item-container .item-left-part {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+.shaddai-list-item .item-container .item-right-part {
+    width: 20%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.shaddai-list-item .item-container .item-title {
+    color: var(--title);
+    font-size: 25px;
+    font-weight: 600;
+    font-style: italic;
+}
+
+.shaddai-list-item .item-container .item-subtitle {
+    color: var(--title);
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.shaddai-list-item .item-container .item-icon {
+    color: var(--title);
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.selected-item-container {
+    border-left: solid 1px #B7B7B7;
+    padding: 0 15px;
+}
+
+.selected-item-container .form-container {
+    display: grid;
+    grid-template-areas: "code distance" "origin destiny" "vehicles ." "stops .";
+    row-gap: 42px;
+}
+
+.selected-item-container .update-form-container {
+    display: grid;
+    grid-template-areas: "name ." "code distance" "origin destiny" "vehicles ." "stops .";
+    row-gap: 42px;
+}
+
+.selected-item-container .name {
+    grid-area: name;
+}
+
+.selected-item-container .code {
+    grid-area: code;
+}
+
+.selected-item-container .distance {
+    grid-area: distance;
+}
+
+.selected-item-container .origin {
+    grid-area: origin;
+}
+
+.selected-item-container .destiny {
+    grid-area: destiny;
+}
+
+.selected-item-container .vehicles {
+    grid-area: vehicles;
+}
+
+.selected-item-container .stops {
+    grid-area: stops;
+}
+
+.selected-item-container .item-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.selected-item-container .item-container .item-title {
+    color: var(--title);
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.selected-item-container .item-container .item-text {
+    color: var(--text);
+    font-size: 25px;
+    font-weight: normal;
+    font-style: italic;
+}
+
+.under-section {
+    margin-top: 5px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.under-section .back-button {
+    cursor: pointer;
+    color: #6E9ADD;
+}
+
+.under-section .delete-button {
+    cursor: pointer;
+    color: #db3c3c;
+    margin-right: 10px;
+}
+
+.shaddai-proceed-button {
+    background-color: #EAD237;
+    color: #3e3e3e;
+    border-radius: 20px;
+    min-width: 150px;
+    margin-bottom: 5px;
+    transition: background-color 1s;
+    float: right;
+}
+
+.shaddai-proceed-button:hover {
+    background-color: #EFDD69;
+    font-weight: bold;
+}
+
+.shaddai-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.shaddai-form .input-group {
+    width: 100%;
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.shaddai-form .input-group .label {
+    color: gray;
+}
+
+.shaddai-input {
+    margin-bottom: -15px;
+    width: 100%;
+}
+
+.shaddai-input:focus {
+    outline: none;
+}
+
+.shaddai-input.one-line {
+    height: 40px;
+    border: none;
+    border-bottom: solid 2px #3e3e3e;
+    transition: border-bottom-color 0.5s;
+}
+
+.shaddai-input.one-line:focus {
+    border-bottom: solid 2px #EAD237;
+}

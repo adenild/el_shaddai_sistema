@@ -6,6 +6,7 @@ urlpatterns = [
     path('', dashboard, name='dashboard'),
     path('tickets', tickets, name='tickets'),
     path('tickets/list', tickets_read, name='tickets_list'),
+    path('routes', routes, name='routes'),
     # URL do veículo
     # path('api/vehicle/<method>', VehicleController().handler),
     path('api/vehicle/create', VehicleController().create),

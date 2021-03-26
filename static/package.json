@@ -19,7 +19,6 @@
     "@fortawesome/fontawesome-free": "^5.15.1",
     "bootstrap": "^4.5.2",
     "jquery": "^3.5.1",
-    "moment": "^2.29.1",
     "@popperjs/core": "^2.9.1",
     "vue": "^2.6.12"
   }

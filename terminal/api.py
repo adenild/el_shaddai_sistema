@@ -105,7 +105,6 @@ class RouteController:
             origin=request.POST["origin"],
             destiny=request.POST["destiny"],
             allocated_vehicles=request.POST["allocated_vehicles"],
-            travel_time=request.POST["travel_time"],
             stops=request.POST["stops"],
             is_active=True
         )
@@ -134,7 +133,7 @@ class RouteController:
 
     def update(self, request):
         route = Route.objects.get(id=request.POST["id"])
-        form_fields = ["name", "code", "distance", "origin", "destiny", "allocated_vehicles", "travel_time", "stops"]
+        form_fields = ["name", "code", "distance", "origin", "destiny", "allocated_vehicles", "stops"]
         for field in form_fields:
             if len(request.POST[field]) > 0:
                 setattr(route, field, request.POST[field])  # Altera o campo somente se ele for escrito
