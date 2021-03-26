@@ -1,0 +1,232 @@
+{% extends 'base.html' %}
+{% block title %}Veículos{% endblock %}
+{% load static %}
+{% block primary_dependencies %}
+<link rel="stylesheet" href="{% static 'styles/main.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="vehicles" class="shaddai-container">
+    <div v-if="booleans.update != true" style="margin: auto;">
+        <div class="shaddai-canvas" style="width: 1200px;">
+            <div class="shaddai-title">Veículos <a><i class="far fa-plus-square" style="cursor: pointer" data-toggle="modal" data-target="#addModal"></i></a></div>
+            <div class="shaddai-canvas-content">
+                <div class="shaddai-list">
+                    <div v-for="(vehicle, id) in vehicles" class="shaddai-list-item">
+                        {% verbatim %}
+                        <hr class="shaddai-hr">
+                        <a class="item-container" @click="selectRow(id)">
+                            <div class="item-left-part">
+                                <span class="item-title">{{ vehicle.name }}</span>
+                                <span class="item-subtitle">{{ vehicle.status }}</span>
+                            </div>
+                            <div class="item-right-part">
+                                <span class="item-icon">
+                                    <i class="fas fa-info-circle"></i>
+                                </span>
+                            </div>
+                        </a>
+                        {% endverbatim %}
+                    </div>
+                </div>
+                <div class="vehicle selected-item-container" v-if="selected">
+                    {% verbatim %}
+                    <div class="shaddai-title">{{ selected.name }} <a @click="booleans.update = true"><i style="cursor: pointer" class="far fa-edit"></i></a></div>
+                    <div class="form-container">
+                        <div class="item-container model">
+                            <span class="item-title">Modelo</span>
+                            <span class="item-text">{{ selected.model }}</span>
+                        </div>
+                        <div class="item-container age">
+                            <span class="item-title">Idade</span>
+                            <span class="item-text">{{ selected.age }}</span>
+                        </div>
+                        <div class="item-container status">
+                            <span class="item-title">Status</span>
+                            <span class="item-text">{{ selected.status }}</span>
+                        </div>
+                        <div class="item-container speed">
+                            <span class="item-title">Velocidade máxima</span>
+                            <span class="item-text">{{ selected.max_speed }}</span>
+                        </div>
+                        <div class="item-container passengers">
+                            <span class="item-title">Capacidade de passageiros</span>
+                            <span class="item-text">{{ selected.max_passengers }}</span>
+                        </div>
+                        <div class="item-container maintenance">
+                            <span class="item-title">Próxima manutenção</span>
+                            <span class="item-text">{{ selected.next_maintenance | dateFormat }}</span>
+                        </div>
+                        <div class="item-container driver">
+                            <span class="item-title">Motorista</span>
+                            <span class="item-text">{{ selected.driver }}</span>
+                        </div>
+                    </div>
+                    {% endverbatim %}
+                </div>
+            </div>
+        </div>
+        <div class="under-section">
+            <a class="back-button" href="/terminal">Voltar</a>
+        </div>
+    </div>
+    <div v-else style="margin: auto;">
+        <div class="shaddai-canvas" style="width: 829px;">
+            <div class="shaddai-title">Atualizar veículo <a @click="fillForm()"><i style="cursor: pointer" class="far fa-edit" data-toggle="modal" data-target="#editModal"></i></a></div>
+            <div class="vehicle selected-item-container" v-if="selected" style="border-left: none; padding: 0;">
+                {% verbatim %}
+                <div class="form-container show-name">
+                    <div class="item-container name">
+                        <span class="item-title">Nome</span>
+                        <span class="item-text">{{ selected.name }}</span>
+                    </div>
+                    <div class="item-container model">
+                        <span class="item-title">Modelo</span>
+                        <span class="item-text">{{ selected.model }}</span>
+                    </div>
+                    <div class="item-container age">
+                        <span class="item-title">Idade</span>
+                        <span class="item-text">{{ selected.age }}</span>
+                    </div>
+                    <div class="item-container status">
+                        <span class="item-title">Status</span>
+                        <span class="item-text">{{ selected.status }}</span>
+                    </div>
+                    <div class="item-container speed">
+                        <span class="item-title">Velocidade máxima</span>
+                        <span class="item-text">{{ selected.max_speed }}</span>
+                    </div>
+                    <div class="item-container passengers">
+                        <span class="item-title">Capacidade de passageiros</span>
+                        <span class="item-text">{{ selected.max_passengers }}</span>
+                    </div>
+                    <div class="item-container maintenance">
+                        <span class="item-title">Próxima manutenção</span>
+                        <span class="item-text">{{ selected.next_maintenance | dateFormat }}</span>
+                    </div>
+                    <div class="item-container driver">
+                        <span class="item-title">Motorista</span>
+                        <span class="item-text">{{ selected.driver }}</span>
+                    </div>
+                </div>
+                {% endverbatim %}
+            </div>
+        </div>
+        <div class="under-section">
+            <a class="delete-button" data-toggle="modal" data-target="#deleteModal">Apagar</a>
+            <a class="back-button" @click="booleans.update = false">Voltar</a>
+        </div>
+    </div>
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="shaddai-title">Deletar veículo</div>
+                    <p>
+                        Tem certeza que quer excluir este veículo?
+                        <br> <br>
+                        Todas as interações com relação a ele serão excluídas
+                    </p>
+                    <button class="btn shaddai-proceed-button" @click="deleteVehicle()" data-dismiss="modal">Prosseguir</button>
+                    <button class="btn shaddai-cancel-button" style="margin-right: 5px" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="shaddai-title" style="margin-bottom: 15px;">Editar veículo</div>
+                    <div class="shaddai-form">
+                        <div class="input-group">
+                            <span class="label">Nome </span>
+                            <input v-model="form.name" class="shaddai-input one-line" />
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Modelo </span>
+                            <input v-model="form.model" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Idade </span>
+                            <input v-model="form.age" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Status </span>
+                            <input v-model="form.status" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Velocidade máxima </span>
+                            <input v-model="form.max_speed" class="shaddai-input one-line" />
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Capacidade de passageiros </span>
+                            <input v-model="form.max_passengers" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Próxima manutenção </span>
+                            <input v-model="form.next_maintenance" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Motorista </span>
+                            <input v-model="form.driver" class="shaddai-input one-line"/>
+                        </div>
+                    </div>
+                    <button class="btn shaddai-proceed-button" @click="updateVehicle()" data-dismiss="modal">Prosseguir</button>
+                    <button class="btn shaddai-cancel-button" style="margin-right: 5px" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="shaddai-title" style="margin-bottom: 15px;">Adicionar veículo</div>
+                    <div class="shaddai-form">
+                        <div class="input-group">
+                            <span class="label">Nome </span>
+                            <input v-model="form.name" class="shaddai-input one-line" />
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Modelo </span>
+                            <input v-model="form.model" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Idade </span>
+                            <input v-model="form.age" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Status </span>
+                            <input v-model="form.status" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Velocidade máxima </span>
+                            <input v-model="form.max_speed" class="shaddai-input one-line" />
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Capacidade de passageiros </span>
+                            <input v-model="form.max_passengers" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Próxima manutenção </span>
+                            <input v-model="form.next_maintenance" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Motorista </span>
+                            <input v-model="form.driver" class="shaddai-input one-line"/>
+                        </div>
+                    </div>
+                    <button class="btn shaddai-proceed-button" @click="addVehicle()" data-dismiss="modal">Prosseguir</button>
+                    <button class="btn shaddai-cancel-button" style="margin-right: 5px" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% load static %}
+{% block secondary_dependencies %}
+<script src="{% static 'components/vehicles/main.js' %}"></script>
+{% endblock %}

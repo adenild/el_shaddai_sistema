@@ -21,3 +21,7 @@ def routes(request):
 
 def travels(request):
     return render(request, "terminal/travels.html", {"base": "base.html"})
+
+
+def vehicles(request):
+    return render(request, "terminal/vehicles.html", {"base": "base.html"})

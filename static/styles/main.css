@@ -78,6 +78,18 @@
     row-gap: 42px;
 }
 
+.vehicle.selected-item-container .form-container {
+    display: grid;
+    grid-template-areas: "model age" "status speed" "passengers ." "maintenance ." "driver .";
+    row-gap: 42px;
+}
+
+.vehicle.selected-item-container .form-container.show-name {
+    display: grid;
+    grid-template-areas: "name ." "model age" "status speed" "passengers ." "maintenance ." "driver .";
+    row-gap: 42px;
+}
+
 .selected-item-container .name {
     grid-area: name;
 }
@@ -120,6 +132,34 @@
 
 .selected-item-container .price {
     grid-area: price;
+}
+
+.selected-item-container .model {
+    grid-area: model;
+}
+
+.selected-item-container .age {
+    grid-area: age;
+}
+
+.selected-item-container .status {
+    grid-area: status;
+}
+
+.selected-item-container .speed {
+    grid-area: speed;
+}
+
+.selected-item-container .passengers {
+    grid-area: passengers;
+}
+
+.selected-item-container .maintenance {
+    grid-area: maintenance;
+}
+
+.selected-item-container .driver {
+    grid-area: driver;
 }
 
 .selected-item-container .item-container {

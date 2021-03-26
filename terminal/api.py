@@ -5,6 +5,11 @@ from terminal.models import Vehicle, Route, Ticket, Travel
 User = get_user_model()
 
 
+def format_date(date):
+    formatted_data = date.split('/')
+    return f"{formatted_data[2]}-{formatted_data[1]}-{formatted_data[0]}"
+
+
 class VehicleController:
     def handler(self, request, method):
         if method == "create":
@@ -24,7 +29,7 @@ class VehicleController:
             status=request.POST["status"],
             max_speed=request.POST["max_speed"],
             max_passengers=request.POST["max_passengers"],
-            next_maintenance=request.POST["next_maintenance"],
+            next_maintenance=format_date(request.POST["next_maintenance"]),
             driver=request.POST["driver"],
             is_active=True
         )
@@ -53,8 +58,9 @@ class VehicleController:
 
     def update(self, request):
         vehicle = Vehicle.objects.get(id=request.POST["id"])
-        form_fields = ["name", "model", "age", "status", "max_speed", "max_passengers", "next_maintenance", "driver"]
-        for field in form_fields:
+        vehicle.next_maintenance = format_date(request.POST["next_maintenance"])
+        common_fields = ["name", "model", "age", "status", "max_speed", "max_passengers", "driver"]
+        for field in common_fields:
             if len(request.POST[field]) > 0:
                 setattr(vehicle, field, request.POST[field])  # Altera o campo somente se ele for escrito
         vehicle.save()
@@ -263,13 +269,12 @@ class TicketController:
         else:
             passenger_id = User.objects.get(id=request.POST["passenger_id"])
 
-        formatted_birthday = request.POST["passenger_birthday"].split('/')
-        formatted_birthday = f"{formatted_birthday[2]}-{formatted_birthday[1]}-{formatted_birthday[0]}"
+
 
         ticket = Ticket(
             travel=Travel.objects.get(id=travel_id),
             passenger_name=request.POST["passenger_name"],
-            passenger_birthday=formatted_birthday,
+            passenger_birthday=format_date(request.POST["passenger_birthday"]),
             passenger_cpf=request.POST["passenger_cpf"],
             passenger_id=passenger_id,
             payment_method=request.POST["payment_method"],
@@ -305,12 +310,10 @@ class TicketController:
 
         travel_id = Travel.objects.get(id=request.POST["travel[id]"])
         user_id = User.objects.get(id=request.POST["passenger_id"])
-        passenger_birthday = request.POST["passenger_birthday"].split('/')
-        passenger_birthday = f"{passenger_birthday[2]}-{passenger_birthday[1]}-{passenger_birthday[0]}"
 
         ticket.travel = travel_id
         ticket.passenger_name = request.POST["passenger_name"]
-        ticket.passenger_birthday = passenger_birthday
+        ticket.passenger_birthday = format_date(request.POST["passenger_birthday"])
         ticket.passenger_cpf = request.POST["passenger_cpf"]
         ticket.passenger_id = user_id
         ticket.payment_method = request.POST["payment_method"]
