@@ -18,7 +18,7 @@
                         <a class="item-container" @click="selectRow(id)">
                             <div class="item-left-part">
                                 <span class="item-title">Viagem {{ id }}</span>
-                                <span class="item-subtitle">{{ routes[travel.route_id].origin }} - {{ routes[travel.route_id].origin }}</span>
+                                <span class="item-subtitle">{{ routes[travel.route_id].origin }} - {{ routes[travel.route_id].destiny }}</span>
                             </div>
                             <div class="item-right-part">
                                 <span class="item-icon">
@@ -35,7 +35,7 @@
                     <div class="form-container">
                         <div class="item-container route">
                             <span class="item-title">Rota</span>
-                            <span class="item-text">{{ routes[selected.route_id].origin }} - {{ routes[selected.route_id].origin }}</span>
+                            <span class="item-text">{{ routes[selected.route_id].origin }} - {{ routes[selected.route_id].destiny }}</span>
                         </div>
                         <div class="item-container departure">
                             <span class="item-title">Saída</span>
@@ -66,7 +66,7 @@
                 <div class="form-container">
                     <div class="item-container route">
                         <span class="item-title">Rota</span>
-                        <span class="item-text">{{ routes[selected.route_id].origin }} - {{ routes[selected.route_id].origin }}</span>
+                        <span class="item-text">{{ routes[selected.route_id].origin }} - {{ routes[selected.route_id].destiny }}</span>
                     </div>
                     <div class="item-container departure">
                         <span class="item-title">Saída</span>
