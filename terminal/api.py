@@ -265,11 +265,9 @@ class TicketController:
         travel_id = int(request.POST["travel[id]"].split()[0].replace("'", ''))
 
         if len(request.POST["passenger_id"]) < 1:
-            passenger_id = User.objects.get(username="local")
+            passenger_id = User.objects.get(username="nouser")
         else:
             passenger_id = User.objects.get(id=request.POST["passenger_id"])
-
-
 
         ticket = Ticket(
             travel=Travel.objects.get(id=travel_id),
