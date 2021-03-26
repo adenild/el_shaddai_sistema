@@ -9,3 +9,7 @@ def dashboard(request):
 
 def tickets(request):
     return render(request, "terminal/tickets.html", {"base": "base.html"})
+
+
+def tickets_read(request):
+    return render(request, "terminal/tickets_read.html", {"base": "base.html"})

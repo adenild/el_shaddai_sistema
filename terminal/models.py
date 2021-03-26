@@ -39,7 +39,7 @@ class Ticket(models.Model):
     passenger_name = models.CharField(max_length=100)
     passenger_birthday = models.DateField()
     passenger_cpf = models.CharField(max_length=11)
-    passenger_id = models.OneToOneField(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.CASCADE)
+    passenger_id = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.CASCADE)
     payment_method = models.CharField(max_length=50)
     change_price = models.FloatField()
     total_price = models.FloatField()

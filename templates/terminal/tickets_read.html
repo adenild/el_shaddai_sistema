@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% block title %}Passagens{% endblock %}
+{% load static %}
+{% block primary_dependencies %}
+    <link rel="stylesheet" href="{% static 'styles/components/Tickets.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/shaddai-table.css' %}">
+{% endblock %}
+{% block content %}
+<div id="tickets" class="shaddai-container">
+    <div v-if="selected" style="margin: auto;">
+        <div class="ticket-container" style="width: 830px; height: 690px;">
+            <div class="shaddai-title">Passagem <a @click="fillForm()"><i style="cursor: pointer" class="far fa-edit" data-toggle="modal" data-target="#editModal"></i></a></div>
+            {% verbatim %}
+            <div style="display: flex; flex-direction: column; margin-bottom: 19px;">
+                <span class="shaddai-title-2" style="margin-bottom: 12px; font-size: 23px;">Nome </span>
+                <span style="font-size: 20px;">{{ selected.passenger_name }}</span>
+            </div>
+            <div style="display: flex; flex-direction: column; margin-bottom: 19px;">
+                <span class="shaddai-title-2" style="margin-bottom: 12px; font-size: 23px;">Nascimento </span>
+                <span style="font-size: 20px;">{{ selected.passenger_birthday | dateFormat }}</span>
+            </div>
+            <div style="display: flex; flex-direction: column; margin-bottom: 19px;">
+                <span class="shaddai-title-2" style="margin-bottom: 12px; font-size: 23px;">CPF </span>
+                <span style="font-size: 20px;">{{ selected.passenger_cpf }}</span>
+            </div>
+            <div style="display: flex; flex-direction: column; margin-bottom: 19px;">
+                <span class="shaddai-title-2" style="margin-bottom: 12px; font-size: 23px;">Conta de usuário </span>
+                <span style="font-size: 20px;"  v-if="selected.passenger_id_id != '4'"></span>
+                <span style="font-size: 20px;">{{ selected.passenger_id_id }}</span>
+            </div>
+            <div style="display: flex; flex-direction: column; margin-bottom: 19px;">
+                <span class="shaddai-title-2" style="margin-bottom: 12px; font-size: 23px;">Método de pagamento </span>
+                <span style="font-size: 20px;">{{ selected.payment_method }}</span>
+            </div>
+            <div style="display: flex; flex-direction: column; margin-bottom: 19px;">
+                <span class="shaddai-title-2" style="margin-bottom: 12px; font-size: 23px;">Valor total </span>
+                <span style="font-size: 37px;">{{ selected.total_price | priceFormat }}</span>
+            </div>
+            {% endverbatim %}
+        </div>
+        <a style="display: flex; justify-content: flex-end; margin-top: 5px;">
+            <span style="cursor: pointer; color: #db3c3c; margin-right: 10px" data-toggle="modal" data-target="#deleteModal">Apagar</span>
+            <span style="cursor: pointer; color: #6E9ADD" @click="selected = null">Voltar</span>
+        </a>
+    </div>
+    <div v-else class="ticket-container" style="width: 1820px; min-height: 720px;">
+        <div class="shaddai-title">Passagens</div>
+
+        <table class="table shaddai-table">
+            <thead>
+                <tr>
+                    <th style="width: 283px;">Rota</th>
+                    <th style="width: 239px;">Horário de saída</th>
+                    <th style="width: 291px;">Horário de chegada</th>
+                    <th style="width: 441px;" class="table-left-align">Passageiro</th>
+                    <th style="width: 309px;">Forma de Pagamento</th>
+                    <th style="width: 150px;">Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="shaddai-tr" v-for="(ticket, id) in tickets" @click="selectRow(id)">
+                    {% verbatim %}
+                    <th class="shaddai-table-text " scope="row">
+                        {{ ticket.travel.route.origin }} - {{ ticket.travel.route.destiny }}
+                    </th>
+                    <th class="shaddai-table-text " scope="row">
+                        {{ ticket.travel.departure | timeFormat }}
+                    </th>
+                    <th class="shaddai-table-text " scope="row">
+                        {{ ticket.travel.arrival | timeFormat }}
+                    </th>
+                    <th class="shaddai-table-text table-left-align" scope="row">
+                        {{ ticket.passenger_name }}
+                    </th>
+                    <th class="shaddai-table-text " scope="row">
+                        {{ ticket.payment_method }}
+                    </th>
+                    <th class="shaddai-table-text " scope="row">
+                        {{ ticket.total_price | priceFormat }}
+                    </th>
+                    {% endverbatim %}
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="shaddai-title">Deletar passagem</div>
+                    <p>
+                        Tem certeza que deseja excluir esta passagem?
+                        <br><br>
+                        Parte do pagamento será estornado, uma taxa irá ficar com a empresa
+                    </p>
+                    <button class="btn auth-signup-button" @click="deleteTicket" data-dismiss="modal">Prosseguir</button>
+                    <button class="btn shaddai-cancel-button" style="margin-right: 5px" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="shaddai-title" style="margin-bottom: 15px;">Editar passagem</div>
+                    <div class="auth-signup-form">
+                        <div class="auth-form-input">
+                            <span class="auth-span-label">Nome </span>
+                            <input v-model="form.passenger_name" class="auth-input"/>
+                        </div>
+                        <div class="auth-form-input">
+                            <span class="auth-span-label">Origem x Destino </span>
+                            <input v-model="form.travel.text" class="auth-input"/>
+                        </div>
+                        <div class="auth-form-input">
+                            <span class="auth-span-label">Nascimento </span>
+                            <input v-model="form.passenger_birthday" class="auth-input"/>
+                        </div>
+                        <div class="auth-form-input">
+                            <span class="auth-span-label">CPF </span>
+                            <input v-model="form.passenger_cpf" class="auth-input"/>
+                        </div>
+                        <div class="auth-form-input">
+                            <span class="auth-span-label">Conta de cliente </span>
+                            <input v-model="form.passenger_id" class="auth-input"/>
+                        </div>
+                        <div class="auth-form-input">
+                            <span class="auth-span-label">Forma de pagamento </span>
+                            <input v-model="form.payment_method" class="auth-input"/>
+                        </div>
+                        <div class="auth-form-input" style="width: 100%; margin-bottom: -10px; display: flex">
+                            <div style="width: 50%">
+                                <span class="auth-span-label">Valor total </span>
+                                <div class="custom-input-class">
+                                    <span v-if="form.total_price" class="shaddai-title">
+                                        {% verbatim %}
+                                        {{ form.total_price | priceFormat }}
+                                        {% endverbatim %}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn auth-signup-button" @click="updateTicket" data-dismiss="modal">Prosseguir</button>
+                    <button class="btn shaddai-cancel-button" style="margin-right: 5px" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% load static %}
+{% block secondary_dependencies %}
+    <script>
+    </script>
+    <script src="{% static 'components/terminal/Tickets.js' %}"></script>
+{% endblock %}

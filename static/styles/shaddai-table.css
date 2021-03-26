@@ -1,0 +1,16 @@
+.shaddai-table  tr  th {
+    text-align: center;
+    font-size: 19px;
+}
+
+.shaddai-table .table-left-align {
+    text-align: left;
+}
+
+.shaddai-table .shaddai-table-text {
+    font-size: 20px;
+}
+
+table .shaddai-tr {
+    cursor: pointer;
+}

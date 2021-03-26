@@ -5,6 +5,7 @@ from terminal.api import VehicleController, RouteController, TravelController, T
 urlpatterns = [
     path('', dashboard, name='dashboard'),
     path('tickets', tickets, name='tickets'),
+    path('tickets/list', tickets_read, name='tickets_list'),
     # URL do veículo
     # path('api/vehicle/<method>', VehicleController().handler),
     path('api/vehicle/create', VehicleController().create),

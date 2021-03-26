@@ -9,9 +9,9 @@
 <div id="tickets" class="shaddai-container">
     <div class="ticket-container" style="max-height: 720px; width: 684px;">
         <div class="shaddai-title">Viagens por horário</div>
-        <div v-for="(travel, index) in travels" class="ticket-list-item">
+        <div v-for="(travel, id) in travels" class="ticket-list-item">
             <hr class="ticket-hr">
-            <a class="item-container" @click="fillTravel(index)">
+            <a class="item-container" @click="fillTravel(id)">
                 <div class="item-left-part">
                     <span class="item-title">
                         {% verbatim %}
@@ -36,13 +36,13 @@
     </div>
     <div class="ticket-container" style="max-height: 720px; width: 684px; margin-left: 50px; margin-right: 50px;">
         <div class="shaddai-title">Viagens por rota</div>
-        <div v-for="(travel, index) in travels" class="ticket-list-item">
+        <div v-for="(travel, id) in travels" class="ticket-list-item">
             <hr class="ticket-hr">
-            <a class="item-container">
+            <a class="item-container" @click="fillTravel(id)">
                 <div class="item-left-part">
                     <span class="item-title">
                         {% verbatim %}
-                        {{ travel.route.origin }}
+                        {{ travel.route.destiny }}
                         {% endverbatim %}
                     </span><br>
                     <span class="item-subtitle">
@@ -115,9 +115,9 @@
                     <div style="width: 50%">
                         <span class="auth-span-label">Valor total </span>
                         <div class="custom-input-class">
-                            <span class="shaddai-title">
+                            <span v-if="form.total_price" class="shaddai-title">
                                 {% verbatim %}
-                                {{ form.total_price }}
+                                {{ form.total_price | priceFormat }}
                                 {% endverbatim %}
                             </span>
                         </div>
@@ -125,10 +125,7 @@
                     <div style="width: 50%; justify-content: flex-end; align-items: center; margin-top: 5px">
                         <button class="btn auth-signup-button" @click="registerTicket()">Prosseguir</button>
                     </div>
-
                 </div>
-
-
             </div>
         </div>
     </div>

@@ -76,3 +76,12 @@ a:hover {
     display: flex;
     padding: 50px 50px;
 }
+
+.shaddai-cancel-button {
+    background-color: #e1e0d8;
+    color: #464646;
+    border-radius: 20px;
+    min-width: 158px;
+    margin-bottom: 5px;
+    float: right;
+}

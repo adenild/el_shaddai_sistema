@@ -261,7 +261,7 @@ class TicketController:
         if len(request.POST["passenger_id"]) < 1:
             passenger_id = User.objects.get(username="local")
         else:
-            passenger_id = request.POST["passenger_id"]
+            passenger_id = User.objects.get(id=request.POST["passenger_id"])
 
         formatted_birthday = request.POST["passenger_birthday"].split('/')
         formatted_birthday = f"{formatted_birthday[2]}-{formatted_birthday[1]}-{formatted_birthday[0]}"
@@ -302,11 +302,21 @@ class TicketController:
 
     def update(self, request):
         ticket = Ticket.objects.get(id=request.POST["id"])
-        form_fields = ["travel", "passenger_name", "passenger_birthday", "passenger_cpf", "passenger_id",
-                       "payment_method", "change_price"]
-        for field in form_fields:
-            if len(request.POST[field]) > 0:
-                setattr(ticket, field, request.POST[field])  # Altera o campo somente se ele for escrito
+
+        travel_id = Travel.objects.get(id=request.POST["travel[id]"])
+        user_id = User.objects.get(id=request.POST["passenger_id"])
+        passenger_birthday = request.POST["passenger_birthday"].split('/')
+        passenger_birthday = f"{passenger_birthday[2]}-{passenger_birthday[1]}-{passenger_birthday[0]}"
+
+        ticket.travel = travel_id
+        ticket.passenger_name = request.POST["passenger_name"]
+        ticket.passenger_birthday = passenger_birthday
+        ticket.passenger_cpf = request.POST["passenger_cpf"]
+        ticket.passenger_id = user_id
+        ticket.payment_method = request.POST["payment_method"]
+        ticket.change_price = request.POST["change_price"]
+        ticket.total_price = request.POST["total_price"]
+
         ticket.save()
 
         response = {
