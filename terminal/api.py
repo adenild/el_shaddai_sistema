@@ -160,8 +160,8 @@ class RouteController:
         route = Route.objects.filter(is_active=True, id=request.POST["id"]).values()
         response = {
             "status_code": 200,
-            "data": list(route),
-            "message": "Objetos carregados com sucesso!"
+            "data": list(route)[0],
+            "message": "Objeto carregados com sucesso!"
         }
         return JsonResponse(response)
 
@@ -179,7 +179,7 @@ class TravelController:
 
     def create(self, request):
         travel = Travel(
-            route=request.POST["route"],
+            route=Route.objects.get(id=request.POST["route[id]"]),
             departure=request.POST["departure"],
             arrival=request.POST["arrival"],
             base_price=request.POST["base_price"],
@@ -210,8 +210,9 @@ class TravelController:
 
     def update(self, request):
         travel = Travel.objects.get(id=request.POST["id"])
-        form_fields = ["route", "departure", "arrival", "base_price"]
-        for field in form_fields:
+        travel.route_id = Route.objects.get(id=request.POST["route[id]"])
+        common_fields = ["departure", "arrival", "base_price"]
+        for field in common_fields:
             if len(request.POST[field]) > 0:
                 setattr(travel, field, request.POST[field])  # Altera o campo somente se ele for escrito
         travel.save()

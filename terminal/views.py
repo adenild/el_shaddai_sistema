@@ -17,3 +17,7 @@ def tickets_read(request):
 
 def routes(request):
     return render(request, "terminal/routes.html", {"base": "base.html"})
+
+
+def travels(request):
+    return render(request, "terminal/travels.html", {"base": "base.html"})

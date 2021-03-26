@@ -72,6 +72,12 @@
     row-gap: 42px;
 }
 
+.travel.selected-item-container .form-container {
+    display: grid;
+    grid-template-areas: "route ." "departure arrival" "price .";
+    row-gap: 42px;
+}
+
 .selected-item-container .name {
     grid-area: name;
 }
@@ -98,6 +104,22 @@
 
 .selected-item-container .stops {
     grid-area: stops;
+}
+
+.selected-item-container .route {
+    grid-area: route;
+}
+
+.selected-item-container .departure {
+    grid-area: departure;
+}
+
+.selected-item-container .arrival {
+    grid-area: arrival;
+}
+
+.selected-item-container .price {
+    grid-area: price;
 }
 
 .selected-item-container .item-container {
@@ -184,4 +206,14 @@
 
 .shaddai-input.one-line:focus {
     border-bottom: solid 2px #EAD237;
+}
+
+.shaddai-select {
+    height: 40px;
+    border: solid 2px #3e3e3e;
+    transition: border 0.5s;
+}
+
+.shaddai-select:focus {
+    border: solid 2px #EAD237;
 }
