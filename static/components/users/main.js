@@ -1,15 +1,27 @@
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
+function slashFormat (value) {
+    let newValue = value.split('-')
+    return newValue[2] + '/' + newValue[1] + '/' + newValue[0]
+}
+
 let app = new Vue({
-    el: '#routes',
+    el: '#users',
     data: function () {
         return {
             form: {
                 name: null,
-                code: null,
-                distance: null,
-                origin: null,
-                destiny: null,
-                allocated_vehicles: null,
-                stops: null
+                cpf: null,
+                birthday: null,
+                status: null,
+                position: null,
+                employed_time: null,
+                contract_end: null,
+                salary: null,
+                email: null,
+                username: null,
+                password: null,
+                group: null
             },
             booleans: {
                 add: null,
@@ -18,7 +30,7 @@ let app = new Vue({
                 updateFailed: null,
                 delete: null
             },
-            routes: {},
+            users: {},
             selected: null
         }
     },
@@ -37,36 +49,38 @@ let app = new Vue({
             }
             return cookieValue;
         },
-        selectRow: function (id) {
-            let scope = this;
-            if (scope.routes.length < 1) {
-                scope.selected.name = "Não existem objetos cadastrados no banco";
-                return null
-            }
-            scope.selected = scope.routes[id.toString()];
-            scope.selected["id"] = id.toString();
-        },
         getFirstListElement: function (object) {
             return Object.keys(object)[0]
+        },
+        selectRow: function (id) {
+            let scope = this;
+            scope.selected = scope.users[id.toString()];
+            scope.selected["id"] = id.toString();
         },
         fillForm: function () {
             let scope = this;
             scope.form = {
-                name: scope.selected.name,
-                code: scope.selected.code,
-                distance: scope.selected.distance,
-                origin: scope.selected.origin,
-                destiny: scope.selected.destiny,
-                allocated_vehicles: scope.selected.allocated_vehicles,
-                stops: scope.selected.stops,
+                name: scope.selected["first_name"]+ ' ' + scope.selected["last_name"],
+                cpf: scope.selected.cpf,
+                birthday: slashFormat(scope.selected.birthday),
+                status: scope.selected.status,
+                position: scope.selected.position,
+                employed_time: scope.selected.employed_time,
+                contract_end: slashFormat(scope.selected.contract_end),
+                salary: scope.selected.salary,
+                email: scope.selected.email,
+                username: scope.selected.username,
+                password: scope.selected.password,
+                group: scope.selected.group,
+
             }
         },
-        addRoute: async function () {
+        addUser: async function () {
             let scope = this;
             const params = scope.form;
             await $.ajax({
                 method: "POST",
-                url: "/terminal/api/route/create",
+                url: "/system/api/user/create",
                 data: params,
                 credentials: "include",
                 headers: {'X-CSRFToken': this.getCookie("csrftoken")},
@@ -75,27 +89,27 @@ let app = new Vue({
                 }
             }).catch(error => scope.booleans.failed = true)
         },
-        getRoutes: async function () {
+        getUsers: async function () {
             let scope = this;
             let request = await $.ajax({
                 method: "POST",
-                url: "/terminal/api/route/read",
+                url: "/system/api/user/read",
                 credentials: 'include',
                 headers: {'X-CSRFToken': this.getCookie("csrftoken")},
                 success: function (response) {
-                    scope.routes = response["data"];
+                    scope.users = response["data"];
                     scope.booleans.load = true;
                 }
             });
 
         },
-        updateRoute: async function () {
+        updateUser: async function () {
             let scope = this;
             let params = scope.form;
             params["id"] = scope.selected.id;
             await $.ajax({
                 method: "POST",
-                url: "/terminal/api/route/update",
+                url: "/system/api/user/update",
                 data: params,
                 credentials: "include",
                 headers: {'X-CSRFToken': this.getCookie("csrftoken")},
@@ -104,28 +118,33 @@ let app = new Vue({
                 }
             }).catch(error => scope.booleans.updateFailed = true)
         },
-        deleteRoute: async function () {
+        deleteUser: async function () {
             let scope = this;
             const params = {id: scope.selected.id};
             $.ajax({
                 method: "POST",
-                url: "/terminal/api/route/delete",
+                url: "/system/api/user/delete",
                 data: params,
                 credentials: "include",
                 headers: {'X-CSRFToken': this.getCookie("csrftoken")},
                 success: function (){
-                    delete scope.routes[scope.selected.id];
-                    scope.selectRow(1);
+                    delete scope.users[scope.selected.id];
+                    scope.selectRow(scope.getFirstListElement(scope.users));
                     scope.booleans.update = false;
                 }
             }).catch(error => scope.booleans.delete = true)
         },
     },
     filters: {
-
+        dateFormat: function (value) {
+            let newValue = value.split('-')
+            return newValue[2] + '/' + newValue[1] + '/' + newValue[0]
+        },
     },
     mounted: async function () {
-        await this.getRoutes();
-        this.selectRow(this.getFirstListElement(this.routes));
+        await this.getUsers();
+        await delay(200);
+        this.selectRow(this.getFirstListElement(this.users));
+
     }
 })

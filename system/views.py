@@ -14,3 +14,8 @@ def logon(request):
 
 def landing(request):
     return render(request, 'system/landing.html', {"base": "base.html"})
+
+
+def users(request):
+    return render(request, "system/users.html", {"base": "base.html"})
+

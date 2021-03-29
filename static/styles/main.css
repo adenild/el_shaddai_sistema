@@ -90,6 +90,12 @@
     row-gap: 42px;
 }
 
+.user.selected-item-container .form-container {
+    display: grid;
+    grid-template-areas: "name birthday" "status position" "employed ." "contract ." "salary .";
+    row-gap: 42px;
+}
+
 .selected-item-container .name {
     grid-area: name;
 }
@@ -160,6 +166,30 @@
 
 .selected-item-container .driver {
     grid-area: driver;
+}
+
+.selected-item-container .birthday {
+    grid-area: birthday;
+}
+
+.selected-item-container .status {
+    grid-area: status;
+}
+
+.selected-item-container .position {
+    grid-area: position;
+}
+
+.selected-item-container .employed {
+    grid-area: employed;
+}
+
+.selected-item-container .contract {
+    grid-area: contract;
+}
+
+.selected-item-container .salary {
+    grid-area: salary;
 }
 
 .selected-item-container .item-container {

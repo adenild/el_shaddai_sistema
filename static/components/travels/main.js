@@ -46,6 +46,9 @@ let app = new Vue({
             scope.selected = scope.travels[id.toString()];
             scope.selected["id"] = id.toString();
         },
+        getFirstListElement: function (object) {
+            return Object.keys(object)[0]
+        },
         fillForm: function () {
             let scope = this;
             scope.form = {
@@ -79,7 +82,6 @@ let app = new Vue({
                 success: function (response) {
                     scope.travels = response["data"];
                     scope.booleans.load = true;
-                    // scope.mergeRoutesInTravels();
                 }
             });
 
@@ -142,13 +144,6 @@ let app = new Vue({
                 }
             })
         },
-        mergeRoutesInTravels: async function () {
-            let scope = this;
-            for (let id in scope.travels) {
-                console.log(scope.travels[id])
-                scope.travels[id]["route"] = this.getRoute(scope.travels[id]["route_id"])
-            }
-        },
     },
     filters: {
         priceFormat: function (value){
@@ -160,7 +155,7 @@ let app = new Vue({
         await delay(250);
         await this.getTravels();
         await delay(100);
-        this.selectRow(1);
+        this.selectRow(this.getFirstListElement(this.travels));
 
     }
 })

@@ -112,3 +112,9 @@ a:hover {
     font-weight: bold;
     margin-bottom: 25px;
 }
+
+
+.dropdown-item.shaddai-dropdown {
+    cursor: pointer;
+    font-size: 20px;
+}

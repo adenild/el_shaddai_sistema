@@ -1,13 +1,16 @@
-{% extends 'base.html' %}
-{% block primary_dependencies %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        {% load static %}
+        html {
+          background: url({% static 'images/landing.png' %});
+        }
+    </style>
+</head>
+<body>
 
-{% endblock %}
-
-{% block content %}
-
-{% endblock %}
-
-{% load static %}
-{% block secondary_dependencies %}
-
-{% endblock %}
+</body>
+</html>

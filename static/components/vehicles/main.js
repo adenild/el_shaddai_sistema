@@ -27,7 +27,6 @@ let app = new Vue({
                 delete: null
             },
             vehicles: {},
-            routes: {},
             selected: null
         }
     },
@@ -50,6 +49,9 @@ let app = new Vue({
             let scope = this;
             scope.selected = scope.vehicles[id.toString()];
             scope.selected["id"] = id.toString();
+        },
+        getFirstListElement: function (object) {
+            return Object.keys(object)[0]
         },
         fillForm: function () {
             let scope = this;
@@ -133,7 +135,7 @@ let app = new Vue({
     mounted: async function () {
         await this.getVehicles();
         await delay(100);
-        this.selectRow(1);
+        this.selectRow(this.getFirstListElement(this.vehicles));
 
     }
 })

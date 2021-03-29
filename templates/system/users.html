@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+{% block title %}Usuários{% endblock %}
+{% load static %}
+{% block primary_dependencies %}
+<link rel="stylesheet" href="{% static 'styles/main.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="users" class="shaddai-container">
+    <div v-if="booleans.update != true" style="margin: auto;">
+        <div class="shaddai-canvas" style="width: 1200px;">
+            <div class="shaddai-title">Usuários <a><i class="far fa-plus-square" style="cursor: pointer" data-toggle="modal" data-target="#addModal"></i></a></div>
+            <div class="shaddai-canvas-content">
+                <div class="shaddai-list">
+                    <div v-for="(user, id) in users" class="shaddai-list-item">
+                        {% verbatim %}
+                        <hr class="shaddai-hr">
+                        <a class="item-container" @click="selectRow(id)">
+                            <div class="item-left-part">
+                                <span class="item-title">{{ user.first_name }} {{ user.last_name }}</span>
+                                <span class="item-subtitle">{{ user.position }}</span>
+                            </div>
+                            <div class="item-right-part">
+                                <span class="item-icon">
+                                    <i class="fas fa-info-circle"></i>
+                                </span>
+                            </div>
+                        </a>
+                        {% endverbatim %}
+                    </div>
+                </div>
+                <div class="user selected-item-container" v-if="selected">
+                    {% verbatim %}
+                    <div class="shaddai-title">Funcionário {{ selected.id }} <a @click="booleans.update = true"><i style="cursor: pointer" class="far fa-edit"></i></a></div>
+                    <div class="form-container">
+                        <div class="item-container name">
+                            <span class="item-title">Nome</span>
+                            <span class="item-text">{{ selected.first_name }} {{ selected.last_name }}</span>
+                        </div>
+                        <div class="item-container birthday">
+                            <span class="item-title">Nascimento</span>
+                            <span class="item-text">{{ selected.birthday | dateFormat }}</span>
+                        </div>
+                        <div class="item-container status">
+                            <span class="item-title">Status</span>
+                            <span class="item-text">{{ selected.status }}</span>
+                        </div>
+                        <div class="item-container position">
+                            <span class="item-title">Cargo</span>
+                            <span class="item-text">{{ selected.position }}</span>
+                        </div>
+                        <div class="item-container employed">
+                            <span class="item-title">Tempo na empresa</span>
+                            <span class="item-text">{{ selected.employed_time }}</span>
+                        </div>
+                        <div class="item-container contract">
+                            <span class="item-title">Fim do contrato</span>
+                            <span class="item-text">{{ selected.contract_end | dateFormat }}</span>
+                        </div>
+                        <div class="item-container salary">
+                            <span class="item-title">Salário</span>
+                            <span class="item-text">{{ selected.salary }}</span>
+                        </div>
+                    </div>
+                    {% endverbatim %}
+                </div>
+            </div>
+        </div>
+        <div class="under-section">
+            <a class="back-button" href="/terminal">Voltar</a>
+        </div>
+    </div>
+    <div v-else style="margin: auto;">
+        <div class="shaddai-canvas" style="width: 829px;">
+            <div class="shaddai-title">Atualizar usuário <a @click="fillForm()"><i style="cursor: pointer" class="far fa-edit" data-toggle="modal" data-target="#editModal"></i></a></div>
+            <div class="user selected-item-container" v-if="selected" style="border-left: none; padding: 0;">
+                {% verbatim %}
+                <div class="form-container">
+                    <div class="item-container name">
+                        <span class="item-title">Nome</span>
+                        <span class="item-text">{{ selected.first_name }} {{ selected.last_name }}</span>
+                    </div>
+                    <div class="item-container birthday">
+                        <span class="item-title">Nascimento</span>
+                        <span class="item-text">{{ selected.birthday | dateFormat }}</span>
+                    </div>
+                    <div class="item-container status">
+                        <span class="item-title">Status</span>
+                        <span class="item-text">{{ selected.status }}</span>
+                    </div>
+                    <div class="item-container position">
+                        <span class="item-title">Cargo</span>
+                        <span class="item-text">{{ selected.position }}</span>
+                    </div>
+                    <div class="item-container employed">
+                        <span class="item-title">Tempo na empresa</span>
+                        <span class="item-text">{{ selected.employed_time }}</span>
+                    </div>
+                    <div class="item-container contract">
+                        <span class="item-title">Fim do contrato</span>
+                        <span class="item-text">{{ selected.contract_end | dateFormat }}</span>
+                    </div>
+                    <div class="item-container salary">
+                            <span class="item-title">Salário</span>
+                            <span class="item-text">{{ selected.salary }}</span>
+                        </div>
+                </div>
+                {% endverbatim %}
+            </div>
+        </div>
+        <div class="under-section">
+            <a class="delete-button" data-toggle="modal" data-target="#deleteModal">Apagar</a>
+            <a class="back-button" @click="booleans.update = false">Voltar</a>
+        </div>
+    </div>
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="shaddai-title">Deletar usuário</div>
+                    <p>
+                        Tem certeza que quer excluir este usuário?
+                        <br> <br>
+                        Todas as interações com relação a ele serão excluídas
+                    </p>
+                    <button class="btn shaddai-proceed-button" @click="deleteUser()" data-dismiss="modal">Prosseguir</button>
+                    <button class="btn shaddai-cancel-button" style="margin-right: 5px" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="overflow-y: initial;">
+            <div class="modal-content">
+                <div class="modal-body" style="height: 80vh; overflow-y: auto;">
+                    <div class="shaddai-title" style="margin-bottom: 15px;">Editar usuário</div>
+                    <div class="shaddai-form">
+                        <div class="input-group">
+                            <span class="label">Categoria </span>
+                            <select v-model="form.group" class="shaddai-input shaddai-select">
+                                <option value="Funcionário">Funcionário</option>
+                                <option value="Gerente">Gerente</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Nome </span>
+                            <input v-model="form.name" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">CPF </span>
+                            <input v-model="form.cpf" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Nascimento </span>
+                            <input v-model="form.birthday" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Status </span>
+                            <input v-model="form.status" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Cargo </span>
+                            <input v-model="form.position" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Tempo na empresa </span>
+                            <input v-model="form.employed_time" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Fim do contrato </span>
+                            <input v-model="form.contract_end" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Salário </span>
+                            <input v-model="form.salary" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">E-mail </span>
+                            <input v-model="form.email" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Usuário </span>
+                            <input v-model="form.username" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Senha </span>
+                            <input v-model="form.password" class="shaddai-input one-line" type="password"/>
+                        </div>
+                    </div>
+                    <button class="btn shaddai-proceed-button" @click="updateUser()" data-dismiss="modal">Prosseguir</button>
+                    <button class="btn shaddai-cancel-button" style="margin-right: 5px" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="overflow-y: initial;">
+            <div class="modal-content">
+                <div class="modal-body" style="height: 80vh; overflow-y: auto;">
+                    <div class="shaddai-title" style="margin-bottom: 15px;">Adicionar usuário</div>
+                    <div class="shaddai-form">
+                        <div class="input-group">
+                            <span class="label">Categoria </span>
+                            <select v-model="form.group" class="shaddai-input shaddai-select">
+                                <option value="Funcionário">Funcionário</option>
+                                <option value="Gerente">Gerente</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Nome </span>
+                            <input v-model="form.name" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">CPF </span>
+                            <input v-model="form.cpf" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Nascimento </span>
+                            <input v-model="form.birthday" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Status </span>
+                            <input v-model="form.status" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Cargo </span>
+                            <input v-model="form.position" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Tempo na empresa </span>
+                            <input v-model="form.employed_time" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Fim do contrato </span>
+                            <input v-model="form.contract_end" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Salário </span>
+                            <input v-model="form.salary" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">E-mail </span>
+                            <input v-model="form.email" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Usuário </span>
+                            <input v-model="form.username" class="shaddai-input one-line"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="label">Senha </span>
+                            <input v-model="form.password" class="shaddai-input one-line" type="password"/>
+                        </div>
+                    </div>
+                    <button class="btn shaddai-proceed-button" @click="addUser()" data-dismiss="modal">Prosseguir</button>
+                    <button class="btn shaddai-cancel-button" style="margin-right: 5px" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% load static %}
+{% block secondary_dependencies %}
+<script src="{% static 'components/users/main.js' %}"></script>
+{% endblock %}

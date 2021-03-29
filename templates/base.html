@@ -17,13 +17,22 @@
 <body>
     <div class="shaddai-navbar">
         <a href="/" class="shaddai-logo">
-            <img src="{% static 'images/logo3.png' %}"
-                 alt="el shaddai logo">
+            <img src="{% static 'images/logo3.png' %}" alt="el shaddai logo">
         </a>
-        <a class="profile-button">
+
+        <a class="profile-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <img class="profile-image"
-                 src="https://github.com/adenild.png"
-                 alt="profile">
+             src="https://github.com/adenild.png"
+             alt="profile">
+            <div class="dropdown-menu" style="width: 272px;">
+                <a href="/terminal/tickets" class="dropdown-item shaddai-dropdown">Venda de Passagens</a>
+                <a href="/terminal/vehicles" class="dropdown-item shaddai-dropdown">Veículos</a>
+                <a href="/terminal/routes" class="dropdown-item shaddai-dropdown">Rotas</a>
+                <a href="/terminal/travels" class="dropdown-item shaddai-dropdown">Viagens</a>
+                <a href="/terminal/tickets/list" class="dropdown-item shaddai-dropdown">Passagens</a>
+                <a href="/system/users" class="dropdown-item shaddai-dropdown">Funcionários</a>
+                <a href="/system/logout" class="dropdown-item shaddai-dropdown">Sair</a>
+            </div>
         </a>
     </div>
     {% block content %}
